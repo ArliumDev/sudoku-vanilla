@@ -1,0 +1,49 @@
+.wrapper {
+  margin: auto;
+  width: 50%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.game-info {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(9, 40px);
+  justify-content: center;
+  margin: 10px;
+}
+
+.cell {
+  height: 40px;
+  background: none;
+  cursor: pointer;
+}
+
+.key {
+  margin-right: 5px;
+}
+
+.new-game {
+  margin-top: 20px
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 10px; 
+}
+
+.action-button {
+  border-radius: 20px;
+}

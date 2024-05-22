@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Sudoku Vanilla</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="game-info">
+        <span><strong>Difficulty:</strong> Easy</span>
+        <span><strong>Mistakes:</strong> 0/3</span>
+        <span><strong>Time:</strong> 00:00</span>
+      </div>
+      <div class="game">
+        <div class="board" id="board"></div>
+        <div class="keys" id="keys"></div>
+        <button class="new-game">New Game</button>
+      </div>
+      <div class="controls">
+        <div class="control-button">
+          <button class="action-button"><box-icon name="undo"></box-icon></button>
+          <p>Undo</p>
+        </div>
+        <div class="control-button">
+          <button class="action-button"><box-icon name="eraser"></box-icon></button>
+          <p>Eraser</p>
+        </div>
+        <div class="control-button">
+          <button class="action-button"><box-icon name="edit"></box-icon></button>
+          <p>Notes</p>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
