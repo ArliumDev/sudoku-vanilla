@@ -1,6 +1,7 @@
 const board = document.getElementById('board');
 const keys = document.getElementById('keys');
 const lastMove = [];
+const initialTable = Array(81).fill(null);
 const tableStatus = Array(81).fill(null);
 const tableNotes = Array(81).fill(null);
 let selected = '';
@@ -28,6 +29,10 @@ const createGameTable = () => {
     keys.appendChild(key);
   }
 };
+
+const randomTableGenerator = () => {
+
+}
 
 // Funciones para utilizar el valor de las keys y dibujar el mismo en la casilla del tablero que se clique.
 
@@ -93,7 +98,7 @@ const eraser = (e) => {
    else {
     console.log('I can erase');
     e.target.innerText = '';
-    tableStatus[e.target.id] = null;
+    tableStatus[e.target.id].pop();
     console.log(tableNotes);
   }
 };
