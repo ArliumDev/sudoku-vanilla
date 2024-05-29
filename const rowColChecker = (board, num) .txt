@@ -1,0 +1,30 @@
+const rowColChecker = (board, num) => {
+ for (let row = 0; row < 9; row++) {
+  for (let col = 0; col < 9; col++) {
+   let foundInRow = false;
+   for (let i = 0; i < 9; i++) {
+    if (board[row][i] === num && i !== col) {
+     console.log('Ya estaba en fila')
+     foundInRow = true;
+     break;
+    }
+   }
+
+   let foundInCol = false;
+   for (let i = 0; i < 9; i++) {
+    if (board[i][col] === num && !== row) {
+     console.log('Ya estaba en columna')
+     foundInCol = true;
+     break;
+    }
+   }
+
+   if (foundInRow || foundInCol) {
+    return
+   }
+  }
+ }
+ console.log('No estaba ni en fila ni columna)
+};
+
+rowColChecker(board,num)
