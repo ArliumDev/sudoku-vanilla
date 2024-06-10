@@ -4,13 +4,13 @@ let cell;
 let key;
 let selected;
 
-// Esto hace un array de 9 índices, los cuales a su vez son un array de 9 índices. De esta manera, hemos armado 9 filas para poder comprobar si ya existe el número a escribir en esa fila, y solamente habrá que pensar cómo hacerlo con las columnas. Iterar sobre array de filas y luego el de columnas. (Perplexity)
+// Esto hace un array de 9 índices, los cuales a su vez son un array de 9 índices.
 
 const boardArr = Array(9)
   .fill(null)
   .map(() => Array(9).fill(null));
 
-console.log(boardArr);
+// Función que genera el tablero de juego con botones por casillas de manera automática y repetida hasta cumplir las 81 casillas del tablero, asignándoles un ID a cada una, y un Event Listener que toma como parámetro una función que dibuja el número en la casilla.
 
 const createGameTable = () => {
   for (let i = 0; i < 81; i++) {
@@ -21,6 +21,8 @@ const createGameTable = () => {
     board.appendChild(cell);
   }
 };
+
+// Función que genera los botones de manera automática y repetida hasta cumplir con los 9 valores posibles para decidir qué número queremos dibujar en la casilla, asignándoles un ID a cada uno, y un Event Listener que toma como parámetro una función que guarda el número seleccionado para dibujarlo en la casilla que cliquemos.
 
 const createGameKeys = () => {
   for (let i = 1; i < 10; i++) {
@@ -33,41 +35,55 @@ const createGameKeys = () => {
   }
 };
 
-const rowColChecker = (board, row, col, num) => {
-  // Comprobar si ya estaba en fila
-  for (let i = 0; i < 9; i++) {
-    if (board[row][i] === num && i !== col) {
-      console.log('Ya estaba ese número en la fila');
-    }
-  }
-  // Comprobar si ya estaba número en columna
-  for (let i = 0; i < 9; i++) {
-    if (board[i][col] === num && i !== row) {
-      console.log('Ya estaba ese número en la columna');
-    }
-  }
-};
+// Función que guarda en una variable el valor del número seleccionado para dibujarlo en la casilla que cliquemos en el tablero.
 
 const selectNumber = (e) => {
-  selected = e.target.value;
+  selected = parseInt(e.target.value);
 };
+
+// Función que dibuja el número en la casilla que cliquemos. Recoge el disparador de evento y lo asocia a una variable 'drawCell' para usarla más tarde, y dos fórmulas asociadas a las variables 'rowIndex' y 'colIndex' que calculan el índice de fila y columna respectivamente.
 
 const drawNumber = (e) => {
   const drawCell = e.target;
-  drawCell.innerText = selected;
-  let found = false;
+  const rowIndex = Math.floor(drawCell.id / 9);
+  const colIndex = drawCell.id % 9;
+
+  // Chequea que el número seleccionado a dibujar en el tablero no se encuentre ya en la fila de la celda donde queremos dibujarlo.
+
+  for (let i = 0; i < boardArr.length; i++) {
+    if (boardArr[i][colIndex] === selected) {
+      console.log('El número ya está en columna');
+      console.log(boardArr[i][colIndex]);
+      return;
+    }
+  }
+  // Chequea que el número seleccionado a dibujar en el tablero no se encuentre ya en la columna de la celda donde queremos dibujarlo.
+
+  for (let i = 0; i < boardArr.length; i++) {
+    if (boardArr[rowIndex][i] === selected) {
+      console.log('El número ya está en fila');
+      console.log(boardArr[rowIndex][i]);
+      return;
+    }
+  }
+
+  // Bucle for anidado que recorre los índices de los subarrays de boardArr. Si el ID de 'drawCell' es igual al resultado de la fórmula para calcular la posición actual en el array 2D (boardArr) a partir de 'drawCell.id', se dibuja el el número que seleccionamos anteriormente para dibujar, y se añade a la posición calculada del array 2D (boardArr)
+
+  /* 
+  i * boardArr[i].length + j calcula la posición del actual en el array 2D como sigue:
+  
+  1. Multiplica el index de fila 'i' por el número de elementos en la fila actual ('boardArr[i].length')
+  2. Agrega el index de columna 'j' a la posición calculada en el paso anterior
+  */
 
   for (let i = 0; i < boardArr.length; i++) {
     for (let j = 0; j < boardArr[i].length; j++) {
       if (parseInt(drawCell.id) === i * boardArr[i].length + j) {
-        boardArr[i][j] = drawCell.innerText;
+        drawCell.innerText = selected;
+        boardArr[i][j] = parseInt(drawCell.innerText);
         console.log(boardArr);
-        found = true;
-        break;
+        return;
       }
-    }
-    if (found) {
-      break;
     }
   }
 };
