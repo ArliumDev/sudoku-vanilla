@@ -187,7 +187,20 @@ const erase = (e) => {
 };
 
 const notes = (e) => {
-  
+  const drawCell = e.target;
+
+  if (note) {
+    for (let i = 0; i < notesBoardArr.length; i++) {
+      for (let j = 0; j < notesBoardArr[i].length; j++) {
+        if (parseInt(drawCell.id) === i * notesBoardArr[i].length + j) {
+          drawCell.innerText = selected;
+          notesBoardArr[i][j] = parseInt(selected);
+          console.log(notesBoardArr);
+          return;
+        }
+      }
+    }
+  }
 };
 
 const isEraserOn = () => {
