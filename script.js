@@ -187,20 +187,7 @@ const erase = (e) => {
 };
 
 const notes = (e) => {
-  const drawCell = e.target;
-
-  if (note) {
-    for (let i = 0; i < notesBoardArr.length; i++) {
-      for (let j = 0; j < notesBoardArr[i].length; j++) {
-        if (parseInt(drawCell.id) === i * notesBoardArr[i].length + j) {
-          drawCell.innerText = selected;
-          notesBoardArr[i][j] = parseInt(selected);
-          console.log(notesBoardArr);
-          return;
-        }
-      }
-    }
-  }
+  
 };
 
 const isEraserOn = () => {
@@ -215,15 +202,3 @@ const isNotesOn = () => {
 
 createGameTable();
 createGameKeys();
-
-/*
-  Está habiendo conflicto con el array del tablero y 
-  el array de notas. Entiendo que es por la lógica 
-  actual que escribir normal no tiene un toggle 
-  booleano y hace conflicto entre ambos. Habría que
-  hacerle un toogle booleano a la escritura normal 
-  a ver si con eso se resuelve el problema, y además
-  habría que hacer que eraser detecte a qué array 
-  pertenece cada valor escrito en el tablero para que 
-  lo borre del tablero correspondiente.
-*/
