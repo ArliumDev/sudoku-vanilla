@@ -19,8 +19,29 @@ const wipedBoardArr = Array(9)
   .fill(null)
   .map(() => Array(9).fill(null));
 
-const boardArr = wipedBoardArr;
-const notesBoardArr = wipedBoardArr;
+/* 
+  Creamos una copia profunda del objeto usando JSON.parse(JSON.stringify(obj))
+  Aquí está el proceso paso a paso:
+  1. JSON.stringify(obj) convierte el objeto 'obj' en una cadena JSON
+  2. JSON.parse() convierte la cadena JSON de vuelta en un objeto
+  Este proceso crea una nueva instancia del objeto, sin compartir referencia con el original
+
+  Esto es para hacer una copia profunda del objeto wipedBoardArr, pues al usar el constructor
+  Array() y el método fill() se crean referencias a los mismos objetos en memoria, de manera que
+  métodos como slice() o el spread operator no nos sirven. 
+
+  Necesitamos hacer stringify al objeto y luego parse porque JSON.parse() solo puede parsear 
+  cadenas JSON, no objetos. Cuando hacemos JSON.stringify(obj), estamos convirtiendo el objeto obj 
+  en una cadena JSON. Esta cadena JSON es una representación textual del objeto, que puede ser 
+  almacenada o enviada a través de una red. Luego, cuando hacemos JSON.parse(JSON.stringify(obj)), 
+  estamos convirtiendo la cadena JSON de vuelta en un objeto. Este proceso crea una nueva instancia 
+  del objeto, sin compartir referencia con el objeto original. Este proceso es necesario porque 
+  JSON.parse() solo puede parsear cadenas JSON, no objetos. Si intentamos pasar un objeto directamente 
+  a JSON.parse(), se producirá un error.
+*/
+
+const boardArr = JSON.parse(JSON.stringify(wipedBoardArr));
+const notesBoardArr = JSON.parse(JSON.stringify(wipedBoardArr));
 
 /* 
   Función que genera el tablero de juego con botones 
@@ -35,7 +56,6 @@ const createGameTable = () => {
   for (let i = 0; i < 81; i++) {
     cell = document.createElement('button');
     cell.classList.add('cell');
-    cell.classList.add('notes');
     cell.setAttribute('id', [i]);
     cell.addEventListener('click', drawNumber);
     cell.addEventListener('click', erase);
@@ -111,7 +131,7 @@ const drawNumber = (e) => {
     for (let i = 0; i < boardArr.length; i++) {
       if (boardArr[i][colIndex] === selected) {
         console.log('El número ya está en columna');
-        console.log(boardArr[i][colIndex]);
+        console.log(boardArr);
         return;
       }
     }
@@ -125,7 +145,7 @@ const drawNumber = (e) => {
     for (let i = 0; i < boardArr.length; i++) {
       if (boardArr[rowIndex][i] === selected) {
         console.log('El número ya está en fila');
-        console.log(boardArr[rowIndex][i]);
+        console.log(boardArr);
         return;
       }
     }
@@ -152,11 +172,11 @@ const drawNumber = (e) => {
   calculada en el paso anterior.
   */
 
-  if (!eraser && !note) {
+  if (!eraser && note == false) {
     for (let i = 0; i < boardArr.length; i++) {
       for (let j = 0; j < boardArr[i].length; j++) {
         if (parseInt(drawCell.id) === i * boardArr[i].length + j) {
-          drawCell.classList.toggle('notes');
+          drawCell.classList.remove("notes");
           drawCell.innerText = selected;
           boardArr[i][j] = parseInt(selected);
           console.log(boardArr);
@@ -193,6 +213,7 @@ const notes = (e) => {
     for (let i = 0; i < notesBoardArr.length; i++) {
       for (let j = 0; j < notesBoardArr[i].length; j++) {
         if (parseInt(drawCell.id) === i * notesBoardArr[i].length + j) {
+          drawCell.classList.add("notes");
           drawCell.innerText = selected;
           notesBoardArr[i][j] = parseInt(selected);
           console.log(notesBoardArr);
