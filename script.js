@@ -172,11 +172,11 @@ const drawNumber = (e) => {
     calculada en el paso anterior.
   */
 
-  if (!eraser && note == false) {
+  if (!eraser && note == false && selected !== undefined) {
     for (let i = 0; i < boardArr.length; i++) {
       for (let j = 0; j < boardArr[i].length; j++) {
         if (parseInt(drawCell.id) === i * boardArr[i].length + j) {
-          drawCell.classList.remove("notes");
+          drawCell.classList.remove('notes');
           drawCell.innerText = selected;
           boardArr[i][j] = parseInt(selected);
           console.log(boardArr);
@@ -187,7 +187,11 @@ const drawNumber = (e) => {
   }
 };
 
-const undo = () => {};
+const undo = () => {
+  // TODO: Cambiar 'drawCell.id' por el argumento correspondiente
+  const rowIndex = Math.floor(drawCell.id / 9);
+  const colIndex = drawCell.id % 9;
+};
 
 const erase = (e) => {
   const drawCell = e.target;
@@ -209,11 +213,11 @@ const erase = (e) => {
 const notes = (e) => {
   const drawCell = e.target;
 
-  if (note) {
+  if (note && selected !== undefined) {
     for (let i = 0; i < notesBoardArr.length; i++) {
       for (let j = 0; j < notesBoardArr[i].length; j++) {
         if (parseInt(drawCell.id) === i * notesBoardArr[i].length + j) {
-          drawCell.classList.add("notes");
+          drawCell.classList.add('notes');
           drawCell.innerText = selected;
           notesBoardArr[i][j] = parseInt(selected);
           console.log(notesBoardArr);
