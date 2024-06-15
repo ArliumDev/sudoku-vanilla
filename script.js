@@ -163,13 +163,13 @@ const drawNumber = (e) => {
   */
 
   /* 
-  i * boardArr[i].length + j calcula la posición del 
-  actual en el array 2D como sigue:
+    i * boardArr[i].length + j calcula la posición del 
+    actual en el array 2D como sigue:
   
-  1. Multiplica el index de fila 'i' por el número de 
-  elementos en la fila actual ('boardArr[i].length').
-  2. Agrega el index de columna 'j' a la posición 
-  calculada en el paso anterior.
+    1. Multiplica el index de fila 'i' por el número de 
+    elementos en la fila actual ('boardArr[i].length').
+    2. Agrega el index de columna 'j' a la posición 
+    calculada en el paso anterior.
   */
 
   if (!eraser && note == false) {
