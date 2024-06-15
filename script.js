@@ -172,7 +172,7 @@ const drawNumber = (e) => {
   calculada en el paso anterior.
   */
 
-  if (!eraser && note == false && selected !== undefined) {
+  if (!eraser && !note && selected !== undefined) {
     for (let i = 0; i < boardArr.length; i++) {
       for (let j = 0; j < boardArr[i].length; j++) {
         if (parseInt(drawCell.id) === i * boardArr[i].length + j) {
