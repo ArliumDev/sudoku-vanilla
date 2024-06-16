@@ -1,5 +1,7 @@
 const board = document.getElementById('board');
 const keys = document.getElementById('keys');
+const eraserButton = document.getElementById("eraser");
+const notesButton = document.getElementById("notes");
 let cell;
 let key;
 let selected;
@@ -50,10 +52,12 @@ const notesBoardArr = JSON.parse(JSON.stringify(wipedBoardArr));
   cumplir las 81 casillas del tablero, asignándoles 
   un ID a cada una, y un Event Listener que toma como 
   parámetro una función que dibuja el número en la 
-  casilla correspondiente.
+  casilla correspondiente; también genera los 9 
+  botones de números a escribir en el tablero de 
+  la misma manera que las casillas mencionadas.
 */
 
-const createGameTable = () => {
+const createTable = (cell, boardDiv, key, keysDiv) => {
   for (let i = 0; i < 81; i++) {
     cell = document.createElement('button');
     cell.classList.add('cell');
@@ -61,30 +65,18 @@ const createGameTable = () => {
     cell.addEventListener('click', drawNumber);
     cell.addEventListener('click', erase);
     cell.addEventListener('click', notes);
-    board.appendChild(cell);
+    boardDiv.appendChild(cell);
   }
-};
 
-/*
-  Función que genera los botones de manera automática
-  y repetida hasta cumplir con los 9 valores posibles
-  para decidir qué número queremos dibujar en la 
-  casilla, asignándoles un ID a cada uno, 
-  y un Event Listener que toma como parámetro 
-  una función que guarda el número seleccionado 
-  para dibujarlo en la casilla que cliquemos.
-*/
-
-const createGameKeys = () => {
-  for (let i = 1; i < 10; i++) {
+  for (let j = 0; j < 10; j++) {
     key = document.createElement('button');
     key.classList.add('key');
-    key.setAttribute('value', [i]);
+    key.setAttribute('value', [j]);
     key.addEventListener('click', selectNumber);
-    key.innerText = [i];
-    keys.appendChild(key);
+    key.innerText = [j];
+    keysDiv.appendChild(key);
   }
-};
+}
 
 /* 
   Función que guarda en una variable el valor del 
@@ -256,5 +248,22 @@ const isNotesOn = () => {
   console.log("eraser es: " + eraser);
 };
 
-createGameTable();
-createGameKeys();
+// const isFeatureOn = (e) => {
+//   const feature = e.target;
+//   switch (feature.id) {
+//     case "notes":
+//       note = !note;
+//       eraser = false;
+//       console.log("note es: " + note);
+//       console.log("eraser es: " + eraser);
+//       break;
+//     case "eraser":
+//       eraser = !eraser;
+//       note = false;
+//       console.log("eraser es: " + eraser);
+//       console.log("note es: " + note);
+//       break;
+//   }
+// }
+
+createTable(cell, board, key, keys);
