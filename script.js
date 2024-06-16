@@ -6,6 +6,7 @@ let selected;
 let assistant = false;
 let eraser = false;
 let note = false;
+let lastMovementArr = [];
 
 /* 
   Esto hace un array de 9 índices, los cuales a su vez
@@ -179,6 +180,7 @@ const drawNumber = (e) => {
           drawCell.classList.remove('notes');
           drawCell.innerText = selected;
           boardArr[i][j] = parseInt(selected);
+          lastMovementArr.push({ cellId: parseInt(drawCell.id), number: selected });
           console.log(boardArr);
           return;
         }
@@ -189,8 +191,9 @@ const drawNumber = (e) => {
 
 const undo = () => {
   // TODO: Cambiar 'drawCell.id' por el argumento correspondiente
-  const rowIndex = Math.floor(drawCell.id / 9);
-  const colIndex = drawCell.id % 9;
+  // const rowIndex = Math.floor(drawCell.id / 9);
+  // const colIndex = drawCell.id % 9;
+  lastMovementArr.pop();
 };
 
 const erase = (e) => {
@@ -203,6 +206,16 @@ const erase = (e) => {
           drawCell.innerText = '';
           boardArr[i][j] = null;
           console.log(boardArr);
+          return;
+        }
+      }
+    }
+    for (let k = 0; k < notesBoardArr.length; k++) {
+      for (let l = 0; l < notesBoardArr.length; l++) {
+        if (parseInt(drawCell.id) === k * notesBoardArr.length + l) {
+          drawCell.innerText = '';
+          notesBoardArr[k][l] = null;
+          console.log(notesBoardArr);
           return;
         }
       }
@@ -220,6 +233,7 @@ const notes = (e) => {
           drawCell.classList.add('notes');
           drawCell.innerText = selected;
           notesBoardArr[i][j] = parseInt(selected);
+          lastMovementArr.push(parseInt(selected));
           console.log(notesBoardArr);
           return;
         }
@@ -230,12 +244,16 @@ const notes = (e) => {
 
 const isEraserOn = () => {
   eraser = !eraser;
-  console.log(eraser);
+  note = false;
+  console.log("eraser es: " + eraser);
+  console.log("note es: " + note);
 };
 
 const isNotesOn = () => {
   note = !note;
-  console.log(note);
+  eraser = false;
+  console.log("note es: " + note);
+  console.log("eraser es: " + eraser);
 };
 
 createGameTable();
