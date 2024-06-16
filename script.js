@@ -68,7 +68,7 @@ const createTable = (cell, boardDiv, key, keysDiv) => {
     boardDiv.appendChild(cell);
   }
 
-  for (let j = 0; j < 10; j++) {
+  for (let j = 1; j < 10; j++) {
     key = document.createElement('button');
     key.classList.add('key');
     key.setAttribute('value', [j]);
