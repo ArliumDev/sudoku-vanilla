@@ -6,6 +6,8 @@ let selected;
 let assistant = false;
 let eraser = false;
 let note = false;
+let gameHistory = [];
+let moveCount = 1;
 
 /* 
   Esto hace un array de 9 índices, los cuales a su vez
@@ -92,18 +94,9 @@ const createGameKeys = () => {
 */
 
 const selectNumber = (e) => {
+  eraser = false;
+  console.log('eraser out');
   selected = parseInt(e.target.value);
-};
-
-/* 
-  Función que gestiona el toggle del 'Assist Mode', 
-  modo que ayuda al jugador a no repetir un número 
-  ya existente en fila y/o columna.
-*/
-
-const assistMode = () => {
-  assistant = !assistant;
-  assistant ? console.log('Estoy activo') : console.log('Estoy out');
 };
 
 /*
@@ -176,9 +169,10 @@ const drawNumber = (e) => {
     for (let i = 0; i < boardArr.length; i++) {
       for (let j = 0; j < boardArr[i].length; j++) {
         if (parseInt(drawCell.id) === i * boardArr[i].length + j) {
+          gameHistory.push({ type: 'move', cellId: parseInt(drawCell.id), value: drawCell.innerText, movement: moveCount++, class: '' });
           drawCell.classList.remove('notes');
           drawCell.innerText = selected;
-          boardArr[i][j] = parseInt(selected);
+          boardArr[i][j] = selected;
           console.log(boardArr);
           return;
         }
@@ -187,10 +181,36 @@ const drawNumber = (e) => {
   }
 };
 
+/* 
+  Función que gestiona el deshacer movimientos.
+  
+  Iguala una constante 'undoChanges' al resultado de realizar 'pop' al array 'gameHistory', quien lleva la cuenta de los movimientos realizados y los valores previos a cada uno.
+
+  Comprueba si 'undoChanges' contiene algún valor, y busca el elemento en el HTML mediante el ID que coincida con 'undoChanges.cellId). Calcula la posición en fila y columna de la celda en el array, como visto anteriormente.
+
+  Si 'undoChanges.type' es 'move' o 'eraseWrite', en la posición del array calculada anteriormente va a poner el valor si existe en 'undoChanges.value', si no, pone null; remueve la clase 'notes' si la llegara a tener, y agrega el valor de 'undoChanges.value' al 'drawCell.innerText. 
+
+  Y lo propio si 'undoChanges.type' es 'note' o 'eraseNote'
+*/ 
+
 const undo = () => {
-  // TODO: Cambiar 'drawCell.id' por el argumento correspondiente
-  const rowIndex = Math.floor(drawCell.id / 9);
-  const colIndex = drawCell.id % 9;
+  const undoChanges = gameHistory.pop();
+  
+  if (undoChanges) {
+    const drawCell = document.getElementById(undoChanges.cellId);
+    const rowIndex = Math.floor(undoChanges.cellId / 9);
+    const colIndex = undoChanges.cellId % 9;
+
+    if (undoChanges.type === 'move' || undoChanges.type === 'eraseWrite') {
+      boardArr[rowIndex][colIndex] = undoChanges.value ? parseInt(undoChanges.value) : null;
+      drawCell.classList.remove('notes');
+      drawCell.innerText = undoChanges.value;
+    } else if (undoChanges.type === 'note' || undoChanges.type === 'eraseNote') {
+      notesBoardArr[rowIndex][colIndex] = undoChanges.value ? parseInt(undoChanges.value) : null;
+      drawCell.classList.add('notes');
+      drawCell.innerText = undoChanges.value;
+    }
+  }
 };
 
 const erase = (e) => {
@@ -200,9 +220,21 @@ const erase = (e) => {
     for (let i = 0; i < boardArr.length; i++) {
       for (let j = 0; j < boardArr[i].length; j++) {
         if (parseInt(drawCell.id) === i * boardArr[i].length + j) {
+          gameHistory.push({ type: 'eraseMove', cellId: parseInt(drawCell.id), value: drawCell.innerText, class: 'none' });
           drawCell.innerText = '';
           boardArr[i][j] = null;
           console.log(boardArr);
+          return;
+        }
+      }
+    }
+    for (let k = 0; k < notesBoardArr.length; k++) {
+      for (let l = 0; l < notesBoardArr.length; l++) {
+        if (parseInt(drawCell.id) === k * notesBoardArr.length + l) {
+          gameHistory.push({ type: 'eraseNote', cellId: parseInt(drawCell.id), value: drawCell.innerText, class: 'notes' });
+          drawCell.innerText = '';
+          notesBoardArr[k][l] = null;
+          console.log(notesBoardArr);
           return;
         }
       }
@@ -217,9 +249,10 @@ const notes = (e) => {
     for (let i = 0; i < notesBoardArr.length; i++) {
       for (let j = 0; j < notesBoardArr[i].length; j++) {
         if (parseInt(drawCell.id) === i * notesBoardArr[i].length + j) {
+          gameHistory.push({ type: 'note', cellId: parseInt(drawCell.id), value: drawCell.innerText, class: 'notes' });
           drawCell.classList.add('notes');
           drawCell.innerText = selected;
-          notesBoardArr[i][j] = parseInt(selected);
+          notesBoardArr[i][j] = selected;
           console.log(notesBoardArr);
           return;
         }
@@ -228,14 +261,29 @@ const notes = (e) => {
   }
 };
 
+/* 
+  Función que gestiona el toggle del 'Assist Mode', 
+  modo que ayuda al jugador a no repetir un número 
+  ya existente en fila y/o columna.
+*/
+
+const assistMode = () => {
+  assistant = !assistant;
+  assistant ? console.log('Estoy activo') : console.log('Estoy out');
+};
+
 const isEraserOn = () => {
   eraser = !eraser;
-  console.log(eraser);
+  note = false;
+  console.log('eraser es: ' + eraser);
+  console.log('note es: ' + note);
 };
 
 const isNotesOn = () => {
   note = !note;
-  console.log(note);
+  eraser = false;
+  console.log('note es: ' + note);
+  console.log('eraser es: ' + eraser);
 };
 
 createGameTable();
